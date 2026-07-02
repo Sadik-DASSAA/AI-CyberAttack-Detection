@@ -1,0 +1,7 @@
+﻿CIC-IDS2017/
+*.zip
+*.pcap
+__pycache__/
+.env
+.venv/
+venv/
