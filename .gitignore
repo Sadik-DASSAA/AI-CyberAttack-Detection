@@ -5,3 +5,10 @@ __pycache__/
 .env
 .venv/
 venv/
+
+CIC-IDS2017/
+merged_cicids2017.csv
+processed_data/train_test_data.npz
+*.zip
+*.pcap
+__pycache__/
