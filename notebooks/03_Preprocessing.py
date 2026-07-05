@@ -8,12 +8,17 @@ print("=" * 80)
 # Chemin du projet
 project_root = Path(__file__).resolve().parents[1]
 
-# Dossier contenant les fichiers CSV
-data_dir = project_root / "CIC-IDS2017" / "MachineLearningCVE"
+# Dossier contenant les fichiers CSV originaux
+data_dir = project_root / "data" / "raw" / "CIC-IDS2017" / "MachineLearningCVE"
+
+print("Dossier recherché :", data_dir)
+print("Le dossier existe :", data_dir.exists())
 
 # Récupérer tous les fichiers CSV
 csv_files = list(data_dir.glob("*.csv"))
 
+if len(csv_files) == 0:
+    raise FileNotFoundError("Aucun fichier CSV trouvé. Vérifiez le chemin du dataset.")
 print(f"Nombre de fichiers trouvés : {len(csv_files)}")
 
 dataframes = []
@@ -38,7 +43,10 @@ print("\nColonnes du dataset :")
 print(df.columns.tolist())
 
 # Sauvegarde du dataset fusionné
-output_path = project_root / "merged_cicids2017.csv"
+interim_dir = project_root / "data" / "interim"
+interim_dir.mkdir(parents=True, exist_ok=True)
+
+output_path = interim_dir / "merged_cicids2017.csv"
 df.to_csv(output_path, index=False)
 
 print("\nDataset fusionné sauvegardé ici :")
@@ -307,7 +315,10 @@ print("\nTableau des poids des classes :")
 print(class_weights_table)
 
 # Sauvegarde des poids des classes
-class_weights_path = project_root / "class_weights.csv"
+preprocessing_output_dir = project_root / "outputs" / "preprocessing"
+preprocessing_output_dir.mkdir(parents=True, exist_ok=True)
+
+class_weights_path = preprocessing_output_dir / "class_weights.csv"
 class_weights_table.to_csv(class_weights_path, index=False)
 
 print("\nPoids des classes sauvegardés ici :")
@@ -323,7 +334,7 @@ print("ÉTAPE 11 : SAUVEGARDE FINALE DES DONNÉES PRÉTRAITÉES")
 print("=" * 80)
 
 # Création du dossier de sortie
-processed_dir = project_root / "processed_data"
+processed_dir = project_root / "data" / "processed"
 processed_dir.mkdir(exist_ok=True)
 
 # Conversion en float32 pour réduire la taille des fichiers

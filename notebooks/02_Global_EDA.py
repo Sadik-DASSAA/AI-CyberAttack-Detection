@@ -6,8 +6,12 @@ from pathlib import Path
 # Chemin du projet
 project_root = Path(__file__).resolve().parents[1]
 
+# Dossier de sortie pour les résultats EDA
+output_dir = project_root / "outputs" / "eda"
+output_dir.mkdir(parents=True, exist_ok=True)
+
 # Dossier contenant les fichiers CSV
-data_dir = project_root / "CIC-IDS2017" / "MachineLearningCVE"
+data_dir = project_root / "data" / "raw" / "CIC-IDS2017" / "MachineLearningCVE"
 
 # Récupération de tous les fichiers CSV
 csv_files = list(data_dir.glob("*.csv"))
@@ -80,7 +84,7 @@ print("=" * 80)
 print(summary_df)
 
 # Sauvegarde du tableau global
-summary_path = project_root / "global_eda_summary.csv"
+summary_path = output_dir / "global_eda_summary.csv"
 summary_df.to_csv(summary_path, index=False)
 
 print("\nTableau global sauvegardé ici :", summary_path)
@@ -99,7 +103,7 @@ print("=" * 80)
 print(global_distribution_df)
 
 # Sauvegarde distribution globale
-global_distribution_path = project_root / "global_class_distribution.csv"
+global_distribution_path = output_dir / "global_class_distribution.csv"
 global_distribution_df.to_csv(global_distribution_path)
 
 print("\nDistribution globale sauvegardée ici :", global_distribution_path)
@@ -114,7 +118,7 @@ plt.ylabel("Nombre d'observations")
 plt.xticks(rotation=45, ha="right")
 plt.tight_layout()
 
-plot_path = project_root / "global_class_distribution.png"
+plot_path = output_dir / "global_class_distribution.png"
 plt.savefig(plot_path, dpi=300)
 
 print("Graphique global sauvegardé ici :", plot_path)

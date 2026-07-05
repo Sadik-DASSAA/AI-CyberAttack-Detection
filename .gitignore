@@ -12,3 +12,11 @@ processed_data/train_test_data.npz
 *.zip
 *.pcap
 __pycache__/
+
+data/processed/train_test_data.npz
+data/processed/*.npz
+data/interim/merged_cicids2017.csv
+data/raw/
+*.zip
+*.pcap
+__pycache__/

@@ -5,8 +5,7 @@ from pathlib import Path
 project_root = Path(__file__).resolve().parents[1]
 
 # Chemin vers le dataset
-file_path = project_root / "CIC-IDS2017" / "MachineLearningCVE" / "Wednesday-workingHours.pcap_ISCX.csv"
-
+file_path = project_root / "data" / "raw" / "CIC-IDS2017" / "MachineLearningCVE" / "Wednesday-workingHours.pcap_ISCX.csv"
 print("=" * 60)
 print("CHARGEMENT DU DATASET")
 print("=" * 60)
@@ -128,7 +127,10 @@ plt.xticks(rotation=45, ha="right")
 plt.tight_layout()
 
 # Sauvegarde du graphique
-output_path = project_root / "class_distribution_wednesday.png"
+output_dir = project_root / "outputs" / "eda"
+output_dir.mkdir(parents=True, exist_ok=True)
+
+output_path = output_dir / "class_distribution_wednesday.png"
 plt.savefig(output_path)
 
 print("Graphique sauvegardé ici :", output_path)
@@ -175,7 +177,7 @@ print("Matrice de corrélation calculée avec succès.")
 print("Taille de la matrice :", corr_matrix.shape)
 
 # Sauvegarde de la matrice de corrélation en CSV
-corr_csv_path = project_root / "correlation_matrix_wednesday.csv"
+corr_csv_path = output_dir / "correlation_matrix_wednesday.csv"
 corr_matrix.to_csv(corr_csv_path)
 
 print("Matrice de corrélation sauvegardée ici :", corr_csv_path)
@@ -202,7 +204,7 @@ print("\nTop 20 des corrélations fortes :")
 print(strong_corr_df.sort_values(by="Correlation", ascending=False).head(20))
 
 # Sauvegarde des corrélations fortes
-strong_corr_path = project_root / "strong_correlations_wednesday.csv"
+strong_corr_path = output_dir / "strong_correlations_wednesday.csv"
 strong_corr_df.to_csv(strong_corr_path, index=False)
 
 print("\nCorrélations fortes sauvegardées ici :", strong_corr_path)
@@ -217,7 +219,7 @@ plt.xticks(range(len(corr_matrix.columns)), corr_matrix.columns, rotation=90, fo
 plt.yticks(range(len(corr_matrix.columns)), corr_matrix.columns, fontsize=6)
 plt.tight_layout()
 
-heatmap_path = project_root / "correlation_heatmap_wednesday.png"
+heatmap_path = output_dir / "correlation_heatmap_wednesday.png"
 plt.savefig(heatmap_path, dpi=300)
 
 print("Heatmap de corrélation sauvegardée ici :", heatmap_path)
