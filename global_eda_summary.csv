@@ -1,9 +1,0 @@
-Fichier,Lignes,Colonnes,Valeurs manquantes,Valeurs infinies,Doublons,Pourcentage doublons (%),Nombre de classes,Classes
-Friday-WorkingHours-Afternoon-DDos.pcap_ISCX.csv,225745,79,4,64,2633,1.17,2,"BENIGN, DDoS"
-Friday-WorkingHours-Afternoon-PortScan.pcap_ISCX.csv,286467,79,15,727,72353,25.26,2,"BENIGN, PortScan"
-Friday-WorkingHours-Morning.pcap_ISCX.csv,191033,79,28,216,6888,3.61,2,"BENIGN, Bot"
-Monday-WorkingHours.pcap_ISCX.csv,529918,79,64,810,26935,5.08,1,BENIGN
-Thursday-WorkingHours-Afternoon-Infilteration.pcap_ISCX.csv,288602,79,18,396,35630,12.35,2,"BENIGN, Infiltration"
-Thursday-WorkingHours-Morning-WebAttacks.pcap_ISCX.csv,170366,79,20,250,6066,3.56,4,"BENIGN, Web Attack � Brute Force, Web Attack � XSS, Web Attack � Sql Injection"
-Tuesday-WorkingHours.pcap_ISCX.csv,445909,79,201,327,24065,5.4,3,"BENIGN, FTP-Patator, SSH-Patator"
-Wednesday-workingHours.pcap_ISCX.csv,692703,79,1008,1586,81909,11.82,6,"BENIGN, DoS slowloris, DoS Slowhttptest, DoS Hulk, DoS GoldenEye, Heartbleed"
