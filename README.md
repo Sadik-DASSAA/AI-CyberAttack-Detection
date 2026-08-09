@@ -28,5 +28,16 @@ Projet de stage consacré à la détection automatisée des cyberattaques
 
 ## Démarrage du Dashboard
 
-Ouvrir `interface_detection_cyberattaques`, puis exécuter
-`demarrer.bat`.
+Sous Windows, ouvrir `interface_detection_cyberattaques`, puis double-cliquer
+uniquement sur `LANCER_TOUT.bat`. Le lanceur démarre Docker Desktop, Suricata,
+l'API, le Dashboard et la passerelle HTTPS, approuve le certificat local et
+ouvre automatiquement :
+
+`https://localhost/SCA/`
+
+Le fichier `.env` reste local et n'est jamais versionné. Copier
+`.env.example` vers `.env` une seule fois pour configurer Gmail. Les comptes,
+historiques, certificats et journaux d'exécution sont également exclus de Git.
+
+Le résultat des contrôles de complétude, sécurité et dépendances est détaillé
+dans `AUDIT_PROJET_V10_4.md`.

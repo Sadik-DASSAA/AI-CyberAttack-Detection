@@ -27,7 +27,7 @@ RUN python -m pip install --upgrade pip setuptools wheel \
         "streamlit==${STREAMLIT_VERSION}" \
         "starlette==${STARLETTE_VERSION}" \
         "reportlab>=4.4,<5" \
-        "scikit-learn>=1.4,<2" \
+        "scikit-learn==1.8.0" \
         "tornado>=6.5.2,<7" \
     && python -c "import inspect, reportlab, sklearn, starlette, streamlit; from io import BytesIO; from reportlab.pdfgen import canvas; from starlette.middleware.gzip import GZipResponder; p = inspect.signature(GZipResponder.__init__).parameters.get('thread_minimum_size'); assert p is None or p.default is not inspect.Parameter.empty, 'Starlette GZip incompatible'; b = BytesIO(); c = canvas.Canvas(b); c.drawString(20, 20, 'PDF OK'); c.save(); assert b.getvalue().startswith(b'%PDF-'); print('Versions validees : Streamlit', streamlit.__version__, '- Starlette', starlette.__version__, '- ReportLab', reportlab.Version, '- scikit-learn', sklearn.__version__)" \
     && groupadd --gid 10001 soc \

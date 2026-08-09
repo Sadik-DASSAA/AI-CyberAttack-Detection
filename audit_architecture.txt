@@ -1,6 +1,7 @@
 ﻿AUDIT DE L'ARCHITECTURE DU PROJET CIC-IDS2017
 Date : 2026-08-08 20:34:48
-Racine : C:\Users\lorde\Downloads\Datasets
+Racine : <DOSSIER_PROJET>
+ARCHIVE HISTORIQUE : consulter AUDIT_PROJET_V10_4.md pour l'etat actuel.
 
 ==========================================================================================
 1. ÉLÉMENTS À LA RACINE
@@ -37,7 +38,6 @@ FICHIER | 1,62 Ko        | .\interface_detection_cyberattaques\Dockerfile
 DOSSIER | .\interface_detection_cyberattaques\docs
 FICHIER | 1,88 Ko        | .\interface_detection_cyberattaques\docs\CONFIGURATION_NOTIFICATIONS.md
 FICHIER | 3,47 Ko        | .\interface_detection_cyberattaques\docs\LISEZ_MOI_DOCKER.md
-FICHIER | 850 octets     | .\interface_detection_cyberattaques\env.example
 DOSSIER | .\interface_detection_cyberattaques\history
 FICHIER | 600 octets     | .\interface_detection_cyberattaques\history\alert_history.csv
 FICHIER | 191 octets     | .\interface_detection_cyberattaques\history\analysis_metrics.json
@@ -227,7 +227,7 @@ Nom : README_pretraitement.md — occurrences : 2
 10. CONTRÔLE DU CHEMIN DU MODÈLE
 ==========================================================================================
 ÉTAT : MODÈLE TROUVÉ
-Chemin : C:\Users\lorde\Downloads\Datasets\outputs\modelisation_evaluation\models\meilleur_modele.pkl
+Chemin : <DOSSIER_PROJET>\outputs\modelisation_evaluation\models\meilleur_modele.pkl
 Taille : 1,37 Mo
 
 ==========================================================================================

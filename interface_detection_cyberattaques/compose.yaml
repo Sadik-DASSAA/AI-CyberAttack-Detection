@@ -16,7 +16,7 @@ x-security: &security
 
 services:
   data-init:
-    image: supervision-cyberattaques-api:soc-v10-3-3-https-health-fix
+    image: supervision-cyberattaques-api:soc-v10-4-one-click
     build:
       context: .
       dockerfile: Dockerfile
@@ -55,7 +55,7 @@ services:
 
   api:
     <<: *security
-    image: supervision-cyberattaques-api:soc-v10-3-3-https-health-fix
+    image: supervision-cyberattaques-api:soc-v10-4-one-click
     build:
       context: .
       dockerfile: Dockerfile
@@ -117,7 +117,7 @@ services:
 
   dashboard:
     <<: *security
-    image: supervision-cyberattaques-dashboard:soc-v10-3-3-https-health-fix
+    image: supervision-cyberattaques-dashboard:soc-v10-4-one-click
     build:
       context: .
       dockerfile: Dockerfile
@@ -235,7 +235,7 @@ services:
   data-export:
     profiles:
       - maintenance
-    image: supervision-cyberattaques-api:soc-v10-3-3-https-health-fix
+    image: supervision-cyberattaques-api:soc-v10-4-one-click
     build:
       context: .
       dockerfile: Dockerfile

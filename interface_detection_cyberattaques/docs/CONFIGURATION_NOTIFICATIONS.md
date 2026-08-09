@@ -1,68 +1,36 @@
-# Configuration des notifications Gmail et SMS
+# Configuration des notifications Gmail
 
-## 1. Installation
+La version v10.4 envoie les codes de vérification et les alertes par Gmail.
+L'ancien exemple Twilio/SMS a été retiré parce qu'aucune route SMS n'est
+implémentée dans l'API actuelle.
 
-Dans PowerShell, placez-vous dans le dossier du projet puis executez :
+## Créer le fichier local `.env`
 
-```powershell
-python -m pip install -r requirements.txt
-```
-
-## 2. Creer le fichier `.env`
-
-Copiez `.env.example` en `.env` :
+Dans PowerShell, depuis le dossier de l'application :
 
 ```powershell
 Copy-Item .env.example .env
+notepad .env
 ```
 
-Le fichier `.env` contient les secrets et ne doit pas etre publie sur GitHub.
-
-## 3. Gmail
-
-1. Activez la validation en deux etapes du compte Google.
-2. Creez un mot de passe d'application Google de 16 caracteres.
-3. Completez dans `.env` :
+Renseignez uniquement :
 
 ```text
 GMAIL_ENABLED=true
 GMAIL_SENDER=votre.adresse@gmail.com
-GMAIL_RECIPIENT=destinataire@gmail.com
 GMAIL_APP_PASSWORD=xxxx xxxx xxxx xxxx
+GMAIL_SMTP_HOST=smtp.gmail.com
+GMAIL_SMTP_PORT=587
 ```
 
-Le mot de passe normal du compte Gmail ne doit pas etre utilise.
+Le compte Google doit utiliser la validation en deux étapes et un mot de passe
+d'application de 16 caractères. N'utilisez jamais le mot de passe normal du
+compte Gmail.
 
-## 4. SMS avec Twilio
+Le destinataire n'est pas stocké dans `.env` : chaque compte reçoit les alertes
+sur l'adresse vérifiée lors de son inscription.
 
-1. Creez un compte Twilio et obtenez un numero d'envoi SMS.
-2. Copiez l'Account SID et l'Auth Token depuis la console Twilio.
-3. Completez dans `.env` :
+## Appliquer la configuration
 
-```text
-SMS_ENABLED=true
-TWILIO_ACCOUNT_SID=ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-TWILIO_AUTH_TOKEN=votre_auth_token_twilio
-TWILIO_FROM_NUMBER=+1xxxxxxxxxx
-SMS_RECIPIENT=+2126XXXXXXXX
-```
-
-Les numeros doivent utiliser le format international E.164. Avec un compte Twilio d'essai, le numero destinataire doit d'abord etre verifie dans Twilio.
-
-## 5. Demarrage et test
-
-Relancez FastAPI apres toute modification du fichier `.env` :
-
-```powershell
-uvicorn api:app --reload --port 8000
-```
-
-Dans un autre terminal :
-
-```powershell
-python -m streamlit run app.py
-```
-
-Ouvrez ensuite la page **Notifications**. Les etats Gmail et SMS doivent afficher `Configure`. Utilisez le bouton **Envoyer une notification de test** avant d'analyser un fichier complet.
-
-Pendant une analyse CSV ou Suricata, choisissez Gmail, SMS ou les deux. Une notification est envoyee automatiquement pour chaque attaque detectee (`classe != BENIGN`). Le resultat de chaque envoi est conserve dans l'historique.
+Après toute modification, relancez uniquement `LANCER_TOUT.bat`. Le fichier
+`.env` est exclu de Git et ne doit jamais être envoyé ou publié.

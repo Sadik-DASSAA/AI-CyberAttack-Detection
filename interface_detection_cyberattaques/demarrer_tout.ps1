@@ -14,6 +14,7 @@ $SuricataDirectory = "C:\Program Files\Suricata"
 $SuricataExecutable = Join-Path $SuricataDirectory "suricata.exe"
 $SuricataConfiguration = Join-Path $SuricataDirectory "suricata.yaml"
 $SuricataRules = "C:\ProgramData\Suricata\rules\suricata.rules"
+$SuricataThresholdConfig = Join-Path $SuricataDirectory "threshold.config"
 $LabRules = "C:\ProgramData\Suricata\rules\lab-dashboard.rules"
 $PreferredInterfaceAlias = "Wi-Fi"
 
@@ -72,16 +73,58 @@ function Get-CertificateThumbprint {
     }
 }
 
+function Invoke-DockerCopy {
+    param(
+        [Parameter(Mandatory)][string]$Source,
+        [Parameter(Mandatory)][string]$Destination
+    )
+
+    # Docker Compose ecrit sa progression ("Copying") sur stderr meme quand
+    # la copie reussit. PowerShell 7 peut convertir ce simple message en
+    # exception lorsque $ErrorActionPreference vaut Stop. Seul le code de
+    # sortie natif est donc utilise pour juger la copie.
+    $PreviousErrorActionPreference = $ErrorActionPreference
+    $NativePreferenceExists = Test-Path `
+        -LiteralPath "variable:PSNativeCommandUseErrorActionPreference"
+
+    if ($NativePreferenceExists) {
+        $PreviousNativePreference = `
+            $PSNativeCommandUseErrorActionPreference
+    }
+
+    try {
+        $ErrorActionPreference = "Continue"
+
+        if ($NativePreferenceExists) {
+            $PSNativeCommandUseErrorActionPreference = $false
+        }
+
+        & docker compose cp $Source $Destination *> $null
+        return [int]$LASTEXITCODE
+    }
+    finally {
+        $ErrorActionPreference = $PreviousErrorActionPreference
+
+        if ($NativePreferenceExists) {
+            $PSNativeCommandUseErrorActionPreference = `
+                $PreviousNativePreference
+        }
+    }
+}
+
 function Install-SCALocalCertificate {
     $TemporaryCertificate = Join-Path `
         $RuntimeDirectory `
         "SCA-local-root-current.crt"
 
-    & docker compose cp `
-        "gateway:/data/caddy/pki/authorities/local/root.crt" `
-        $TemporaryCertificate *> $null
+    Remove-Item -LiteralPath $TemporaryCertificate -Force `
+        -ErrorAction SilentlyContinue
 
-    if (($LASTEXITCODE -ne 0) -or (-not (
+    $CopyExitCode = Invoke-DockerCopy `
+        -Source "gateway:/data/caddy/pki/authorities/local/root.crt" `
+        -Destination $TemporaryCertificate
+
+    if (($CopyExitCode -ne 0) -or (-not (
         Test-Path -LiteralPath $TemporaryCertificate -PathType Leaf
     ))) {
         return $false
@@ -92,17 +135,53 @@ function Install-SCALocalCertificate {
         throw "Le certificat HTTPS local genere est invalide."
     }
 
-    $PreviousThumbprint = Get-CertificateThumbprint -Path $LocalRootCertificate
-    & certutil.exe -user -addstore -f Root $TemporaryCertificate *> $null
-    if ($LASTEXITCODE -ne 0) {
+    $Certificate = New-Object `
+        -TypeName System.Security.Cryptography.X509Certificates.X509Certificate2 `
+        -ArgumentList $TemporaryCertificate
+    $BasicConstraints = $Certificate.Extensions |
+        Where-Object {
+            $_ -is [System.Security.Cryptography.X509Certificates.X509BasicConstraintsExtension]
+        } |
+        Select-Object -First 1
+
+    if (
+        ($null -eq $BasicConstraints) -or
+        (-not $BasicConstraints.CertificateAuthority) -or
+        ($Certificate.NotAfter -le (Get-Date))
+    ) {
         throw (
-            "Windows n'a pas pu approuver le certificat HTTPS local SCA. " +
-            "Verifiez que le lanceur est execute en administrateur."
+            "Le certificat copie depuis Caddy n'est pas une " +
+            "autorite racine valide."
         )
     }
 
+    $PreviousThumbprint = Get-CertificateThumbprint -Path $LocalRootCertificate
+
+    foreach ($Store in @(
+        "Cert:\CurrentUser\Root",
+        "Cert:\LocalMachine\Root"
+    )) {
+        Import-Certificate `
+            -FilePath $TemporaryCertificate `
+            -CertStoreLocation $Store `
+            -ErrorAction Stop |
+            Out-Null
+
+        if (-not (Test-Path -LiteralPath (Join-Path $Store $NewThumbprint))) {
+            throw "Le certificat SCA n'apparait pas dans $Store."
+        }
+    }
+
     if ($PreviousThumbprint -and ($PreviousThumbprint -ne $NewThumbprint)) {
-        & certutil.exe -user -delstore Root $PreviousThumbprint *> $null
+        foreach ($Store in @(
+            "Cert:\CurrentUser\Root",
+            "Cert:\LocalMachine\Root"
+        )) {
+            Remove-Item `
+                -LiteralPath (Join-Path $Store $PreviousThumbprint) `
+                -Force `
+                -ErrorAction SilentlyContinue
+        }
     }
 
     Copy-Item `
@@ -131,13 +210,16 @@ function Test-SCAHttpsEndpoint {
     }
 
     # La sonde valide explicitement la chaine TLS avec le certificat racine
-    # copie depuis Caddy. Elle n'utilise ni HTTP ni --insecure et ne depend pas
-    # du cache de certificats de la session PowerShell deja ouverte.
+    # copie depuis Caddy. Schannel ne peut pas joindre de serveur de revocation
+    # pour une autorite strictement locale ; --ssl-revoke-best-effort conserve
+    # la verification du certificat et tolere uniquement cette absence.
+    # La sonde n'utilise ni HTTP ni --insecure.
     $HealthResponse = & $CurlCommand.Source `
         --silent `
         --show-error `
         --fail `
         --max-time 10 `
+        --ssl-revoke-best-effort `
         --cacert $CertificatePath `
         "https://localhost/SCA/_stcore/health" 2>$null
 
@@ -280,29 +362,45 @@ function Get-ModelOutputsDirectory {
     )
 
     foreach ($Candidate in $Candidates) {
-        $Model = Join-Path `
-            $Candidate `
-            "modelisation_evaluation\models\meilleur_modele.pkl"
+        $RequiredModelFiles = @(
+            (
+                "modelisation_evaluation\models\" +
+                "meilleur_modele.pkl"
+            ),
+            (
+                "modelisation_evaluation\model_info\" +
+                "meilleur_modele.json"
+            ),
+            (
+                "preprocessing\processed\" +
+                "label_encoder_mapping.json"
+            )
+        )
 
-        if (Test-Path -LiteralPath $Model -PathType Leaf) {
+        $BundleComplete = @(
+            $RequiredModelFiles |
+                Where-Object {
+                    -not (Test-Path `
+                        -LiteralPath (Join-Path $Candidate $_) `
+                        -PathType Leaf)
+                }
+        ).Count -eq 0
+
+        if ($BundleComplete) {
             return (Resolve-Path -LiteralPath $Candidate).Path
         }
     }
 
     throw (
-        "Le modele meilleur_modele.pkl est introuvable. " +
-        "Placez le dossier outputs dans ce dossier ou dans son parent."
+        "Le paquet IA est incomplet. Verifiez meilleur_modele.pkl, " +
+        "meilleur_modele.json et label_encoder_mapping.json dans outputs."
     )
 }
 
 function Get-AlertsDirectory {
     $Candidates = @(
         (Join-Path $ProjectDirectory "alerts"),
-        (Join-Path (Split-Path -Parent $ProjectDirectory) "alerts"),
-        (
-            "C:\Users\lorde\Downloads\Datasets\" +
-            "interface_detection_cyberattaques\alerts"
-        )
+        (Join-Path (Split-Path -Parent $ProjectDirectory) "alerts")
     )
 
     foreach ($Candidate in $Candidates) {
@@ -380,7 +478,10 @@ try {
         $SuricataRuntimeScript,
         (Join-Path $ProjectDirectory "compose.yaml"),
         (Join-Path $ProjectDirectory "Caddyfile"),
+        (Join-Path $ProjectDirectory "Dockerfile"),
+        (Join-Path $ProjectDirectory "requirements.txt"),
         (Join-Path $ProjectDirectory "api.py"),
+        (Join-Path $ProjectDirectory "auth_security.py"),
         (Join-Path $ProjectDirectory "data_migration.py"),
         (Join-Path $ProjectDirectory "app.py")
     )) {
@@ -389,6 +490,17 @@ try {
         )) {
             throw "Fichier requis introuvable : $RequiredFile"
         }
+    }
+
+    # L'installation Windows de Suricata reference ce fichier meme lorsqu'il
+    # ne contient aucune limitation. Le creer evite un avertissement trompeur
+    # au demarrage sans modifier les regles IDS.
+    if (-not (Test-Path -LiteralPath $SuricataThresholdConfig -PathType Leaf)) {
+        New-Item `
+            -ItemType File `
+            -Path $SuricataThresholdConfig `
+            -Force |
+            Out-Null
     }
 
     Write-Step 1 "Verification de Docker Desktop"
@@ -715,6 +827,7 @@ try {
 
     $Deadline = (Get-Date).AddMinutes(2)
     $LastModelError = $null
+    $LastScalerError = $null
     $LastMonitorError = $null
     $LastServiceError = $null
     $CertificateReady = $false
@@ -745,6 +858,7 @@ try {
 
             $Readiness = $ApiPayloadText | ConvertFrom-Json
             $LastModelError = $Readiness.model_error
+            $LastScalerError = $Readiness.scaler_error
             $LastMonitorError = $Readiness.monitor_error
             $ApiReady = $true
 
@@ -791,6 +905,8 @@ try {
         ) -ForegroundColor Yellow
         Write-Host "Derniere erreur du modele : $LastModelError" `
             -ForegroundColor Yellow
+        Write-Host "Derniere erreur du scaler : $LastScalerError" `
+            -ForegroundColor Yellow
         Write-Host "Derniere erreur du lecteur EVE : $LastMonitorError" `
             -ForegroundColor Yellow
         & docker compose logs `
@@ -805,6 +921,18 @@ try {
         Write-Host (
             "[ATTENTION] Modele IA pas encore charge ; " +
             "le site reste accessible."
+        ) -ForegroundColor Yellow
+    }
+
+    if ($Readiness.scaler_loaded) {
+        Write-Host "[OK] Normalisation MinMax du modele chargee." `
+            -ForegroundColor Green
+    }
+    else {
+        Write-Host (
+            "[ATTENTION] Scaler MinMax absent : les flux bruts utiliseront " +
+            "le mode de secours jusqu'a la prochaine execution du " +
+            "pretraitement."
         ) -ForegroundColor Yellow
     }
 

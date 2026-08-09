@@ -50,7 +50,7 @@ app = FastAPI(
     docs_url="/docs" if os.getenv("API_DOCS_ENABLED", "false").lower() == "true" else None,
     redoc_url=None,
 )
-API_VERSION = "dashboard-soc-v10-3-3-https-health-fix"
+API_VERSION = "dashboard-soc-v10-4-one-click"
 
 app.add_middleware(
     CORSMiddleware,
@@ -152,6 +152,9 @@ MODEL_RELATIVE_PATH = (
 MODEL_INFO_RELATIVE_PATH = (
     Path("modelisation_evaluation") / "model_info" / "meilleur_modele.json"
 )
+SCALER_RELATIVE_PATH = (
+    Path("preprocessing") / "processed" / "minmax_scaler.joblib"
+)
 
 
 def chemins_sorties_candidats() -> list[Path]:
@@ -181,6 +184,29 @@ def chemins_modeles_candidats() -> list[Path]:
     if valeur_configuree:
         candidats.append(chemin_configure("MODEL_PATH", APP_DIR / MODEL_RELATIVE_PATH))
     candidats.extend(racine / MODEL_RELATIVE_PATH for racine in chemins_sorties_candidats())
+
+    resultat: list[Path] = []
+    deja_vus: set[str] = set()
+    for candidat in candidats:
+        chemin = candidat.resolve()
+        cle = str(chemin)
+        if cle not in deja_vus:
+            resultat.append(chemin)
+            deja_vus.add(cle)
+    return resultat
+
+
+def chemins_scalers_candidats() -> list[Path]:
+    """Construit les emplacements possibles du scaler MinMax du modèle."""
+    valeur_configuree = os.getenv("SCALER_PATH", "").strip()
+    candidats: list[Path] = []
+    if valeur_configuree:
+        candidats.append(
+            chemin_configure("SCALER_PATH", APP_DIR / SCALER_RELATIVE_PATH)
+        )
+    candidats.extend(
+        racine / SCALER_RELATIVE_PATH for racine in chemins_sorties_candidats()
+    )
 
     resultat: list[Path] = []
     deja_vus: set[str] = set()
@@ -232,6 +258,11 @@ def trouver_chemin_info_modele(chemin_modele: Path) -> Path:
             return candidat.resolve()
     return (chemin_modele.parent.parent / "model_info" / "meilleur_modele.json").resolve()
 LABEL_MAPPING_CANDIDATES = [
+    PROJECT_ROOT
+    / "outputs"
+    / "preprocessing"
+    / "processed"
+    / "label_encoder_mapping.json",
     PROJECT_ROOT / "outputs" / "preprocessing" / "processed" / "label_mapping.json",
     PROJECT_ROOT / "outputs" / "preprocessing" / "proofs" / "label_mapping.json",
     PROJECT_ROOT / "outputs" / "preprocessing" / "tables" / "label_mapping.json",
@@ -240,6 +271,9 @@ LABEL_MAPPING_CANDIDATES = [
 _MODEL_CACHE: Any = None
 _MODEL_CACHE_PATH: Path | None = None
 _MODEL_LOAD_ERROR = ""
+_SCALER_CACHE: Any = None
+_SCALER_CACHE_PATH: Path | None = None
+_SCALER_LOAD_ERROR = ""
 
 
 class StatutUpdate(BaseModel):
@@ -455,6 +489,7 @@ def model_status() -> dict[str, Any]:
     chemin_info = trouver_chemin_info_modele(chemin_modele)
     info = read_json_file(chemin_info)
     modele = load_model()
+    scaler = load_scaler(modele)
     fichier_modele_trouve = chemin_modele.is_file()
     modele_charge = modele is not None
     mode_secours = not modele_charge
@@ -479,6 +514,9 @@ def model_status() -> dict[str, Any]:
         "model_name": nom_modele,
         "score": score,
         "load_error": _MODEL_LOAD_ERROR,
+        "scaler_loaded": scaler is not None,
+        "scaler_candidates": [str(path) for path in chemins_scalers_candidats()],
+        "scaler_error": _SCALER_LOAD_ERROR,
     }
 
 
@@ -547,6 +585,43 @@ def load_model() -> Any:
         _MODEL_CACHE = None
         _MODEL_CACHE_PATH = None
         _MODEL_LOAD_ERROR = f"{exc.__class__.__name__}: {exc}"
+        return None
+
+
+def load_scaler(model: Any = None) -> Any:
+    """Charge uniquement le scaler MinMax compatible avec le modèle courant."""
+    global _SCALER_CACHE, _SCALER_CACHE_PATH, _SCALER_LOAD_ERROR
+
+    candidats = chemins_scalers_candidats()
+    chemin_scaler = next((path for path in candidats if path.is_file()), candidats[0])
+
+    if _SCALER_CACHE is not None and _SCALER_CACHE_PATH == chemin_scaler:
+        return _SCALER_CACHE
+
+    if not chemin_scaler.is_file():
+        _SCALER_LOAD_ERROR = "Fichier minmax_scaler.joblib introuvable."
+        return None
+
+    try:
+        import joblib
+
+        scaler = joblib.load(chemin_scaler)
+        model = model if model is not None else load_model()
+        model_features = list(getattr(model, "feature_names_in_", []))
+        scaler_features = list(getattr(scaler, "feature_names_in_", []))
+        if model_features and scaler_features != model_features:
+            raise ValueError(
+                "Le scaler MinMax ne contient pas les mêmes variables que le modèle."
+            )
+
+        _SCALER_CACHE = scaler
+        _SCALER_CACHE_PATH = chemin_scaler
+        _SCALER_LOAD_ERROR = ""
+        return _SCALER_CACHE
+    except Exception as exc:  # noqa: BLE001
+        _SCALER_CACHE = None
+        _SCALER_CACHE_PATH = None
+        _SCALER_LOAD_ERROR = f"{exc.__class__.__name__}: {exc}"
         return None
 
 
@@ -684,7 +759,25 @@ def predict_with_model(row: dict[str, Any]) -> str | None:
             return None
 
         values = {name: to_float(normalized_row.get(name)) for name in feature_names}
-        prediction = model.predict(pd.DataFrame([values], columns=feature_names))[0]
+        model_input = pd.DataFrame([values], columns=feature_names)
+        scaler = load_scaler(model)
+
+        if scaler is not None:
+            model_input = pd.DataFrame(
+                scaler.transform(model_input),
+                columns=feature_names,
+            )
+        else:
+            # Le modèle actuel a été entraîné sur des valeurs MinMax. Sans le
+            # scaler correspondant, seules des lignes déjà normalisées peuvent
+            # lui être confiées ; les flux bruts utilisent le mode de secours.
+            numeric_values = model_input.to_numpy(dtype=float)
+            if not bool(
+                ((numeric_values >= -0.05) & (numeric_values <= 1.05)).all()
+            ):
+                return None
+
+        prediction = model.predict(model_input)[0]
         return class_from_prediction(prediction)
     except Exception:  # noqa: BLE001
         return None
@@ -1670,6 +1763,8 @@ def readiness() -> dict[str, Any]:
         "version": API_VERSION,
         "model_loaded": bool(model.get("model_loaded")),
         "model_error": str(model.get("load_error", "")),
+        "scaler_loaded": bool(model.get("scaler_loaded")),
+        "scaler_error": str(model.get("scaler_error", "")),
         "monitor_enabled": bool(monitor.get("enabled")),
         "monitor_thread_alive": bool(monitor.get("thread_alive")),
         "monitor_file_exists": bool(monitor.get("file_exists")),

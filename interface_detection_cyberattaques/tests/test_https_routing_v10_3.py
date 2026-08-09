@@ -62,12 +62,24 @@ def test_lanceur_ouvre_uniquement_url_https_propre() -> None:
     assert '"http://localhost:8501' not in launcher
     assert '"http://localhost:8000/' not in launcher
     assert "Install-SCALocalCertificate" in launcher
+    assert "Invoke-DockerCopy" in launcher
+    assert '"Cert:\\CurrentUser\\Root"' in launcher
+    assert '"Cert:\\LocalMachine\\Root"' in launcher
     assert "Test-SCAHttpsEndpoint" in launcher
     assert "--cacert $CertificatePath" in launcher
+    assert "--ssl-revoke-best-effort" in launcher
     assert "\n        --insecure `" not in launcher
     assert "Invoke-WebRequest" not in launcher
     assert '$RunningServices -notcontains "gateway"' in launcher
     assert 'gateway-init gateway' in launcher
+
+
+def test_lanceur_prepare_le_fichier_threshold_suricata() -> None:
+    launcher = (PROJECT_DIR / "demarrer_tout.ps1").read_text(encoding="utf-8")
+
+    assert '$SuricataThresholdConfig = Join-Path $SuricataDirectory "threshold.config"' in launcher
+    assert "New-Item `" in launcher
+    assert "-Path $SuricataThresholdConfig `" in launcher
 
 
 def test_bouton_et_route_de_remise_a_zero_sont_presents() -> None:
@@ -87,5 +99,6 @@ if __name__ == "__main__":
     test_gateway_init_peut_reparer_une_pki_deja_existante()
     test_caddy_force_le_chemin_sca_et_les_entetes()
     test_lanceur_ouvre_uniquement_url_https_propre()
+    test_lanceur_prepare_le_fichier_threshold_suricata()
     test_bouton_et_route_de_remise_a_zero_sont_presents()
     print("HTTPS ROUTING TESTS PASSED")

@@ -1,95 +1,70 @@
-# Démarrage Docker — Supervision des cyberattaques
+# Docker et HTTPS — Supervision des cyberattaques v10.4
 
-Cette configuration lance ensemble :
+La plateforme utilise six services Compose :
 
-- l'API FastAPI sur `http://localhost:8000` ;
-- la documentation FastAPI sur `http://localhost:8000/docs` ;
-- le Dashboard Streamlit sur `http://localhost:8501`.
+- `data-init` migre une seule fois les comptes et l'historique locaux ;
+- `api` exécute FastAPI sur le réseau Docker interne ;
+- `dashboard` exécute Streamlit sous le chemin `/SCA/` ;
+- `gateway-init` prépare les volumes Caddy ;
+- `gateway` publie uniquement HTTPS sur `127.0.0.1:443` ;
+- `data-export`, activé à l'arrêt, sauvegarde les données persistantes.
 
-Suricata sera ajouté plus tard comme troisième service, après validation de son extracteur de flux et de la liaison avec le modèle. Cette première version regroupe uniquement les deux services déjà opérationnels.
+Les ports internes `8000` et `8501` ne sont pas publiés sur Windows. L'unique
+adresse utilisateur est :
 
-L'API et le Dashboard utilisent la même image Python. Cette image est construite
-une seule fois par le service `api`, puis réutilisée par `dashboard`. Cela évite
-le conflit Docker `image ... already exists` provoqué lorsque deux constructions
-parallèles exportent le même tag.
+```text
+https://localhost/SCA/
+```
 
-## Fichiers qui doivent être dans le même dossier
+## Fichiers requis
 
 ```text
 interface_detection_cyberattaques/
+├── LANCER_TOUT.bat
+├── ARRETER_TOUT.bat
+├── demarrer_tout.ps1
+├── arreter_tout.ps1
+├── suricata_runtime.ps1
 ├── api.py
 ├── app.py
+├── auth_security.py
+├── data_migration.py
 ├── requirements.txt
 ├── Dockerfile
 ├── compose.yaml
-├── .dockerignore
-├── demarrer.bat
-└── arreter.bat
+├── Caddyfile
+└── .dockerignore
 ```
 
-Les dossiers de modèles, de données, de sorties et d'historique restent à leur place habituelle. Le projet complet est monté dans les deux conteneurs sous `/app`.
+Le modèle est monté en lecture seule depuis
+`../outputs/modelisation_evaluation/models/meilleur_modele.pkl`.
 
-Le fichier `app.py` fourni dans ce kit correspond à la dernière interface corrigée. Il accepte maintenant l'adresse de l'API via la variable `API_URL`, indispensable pour la communication entre conteneurs.
+## Utilisation
 
-## Première utilisation
+Double-cliquer uniquement sur `LANCER_TOUT.bat`. Le script démarre Docker
+Desktop si nécessaire, valide et lance Suricata, construit les images, attend
+l'API et le Dashboard, approuve l'autorité Caddy dans Windows, vérifie HTTPS et
+ouvre le navigateur.
 
-1. Installer Docker Desktop pour Windows et activer son moteur WSL 2.
-2. Démarrer Docker Desktop et attendre l'état **Engine running**.
-3. Vérifier que `requirements.txt` contient toutes les dépendances de `api.py` et `app.py`.
-4. Double-cliquer sur `demarrer.bat`.
+Pour arrêter et sauvegarder les comptes ainsi que l'historique, utiliser
+`ARRETER_TOUT.bat`.
 
-La première construction télécharge Python et installe les dépendances. Elle est donc plus longue. Les lancements suivants utilisent le cache Docker.
+Ne jamais exécuter `docker compose down -v` : l'option `-v` supprime les
+volumes persistants.
 
-## Utilisation quotidienne
-
-- Démarrer les deux services : double-clic sur `demarrer.bat`.
-- Arrêter les deux services : double-clic sur `arreter.bat`.
-
-Commandes équivalentes dans CMD ou PowerShell :
-
-```powershell
-docker compose build api
-docker compose up -d --no-build
-docker compose logs --follow
-docker compose down
-```
-
-La commande compacte suivante reste également valide :
-
-```powershell
-docker compose up --build -d
-```
-
-## Fonctionnement du réseau
-
-Dans Windows, le Dashboard reste accessible sur `localhost:8501`. À l'intérieur de Docker, le Dashboard contacte l'API avec `http://api:8000`. La variable `API_URL` est réglée automatiquement dans `compose.yaml`.
-
-`app.py` garde aussi une valeur par défaut, `http://127.0.0.1:8000`, afin de pouvoir encore lancer l'application sans Docker si nécessaire.
-
-## Vérifications rapides
+## Vérifications techniques
 
 ```powershell
 docker compose ps
-docker compose logs api
-docker compose logs dashboard
+docker compose logs --tail=100 api dashboard gateway
 ```
 
-Les deux services doivent avoir l'état `Up` ou `healthy`.
+`api`, `dashboard` et `gateway` doivent rester actifs. `data-init` et
+`gateway-init` terminés avec le code 0 sont normaux : ce sont des tâches
+ponctuelles.
 
-## En cas d'échec pendant l'installation des dépendances
+## Données locales
 
-Le fichier `requirements.txt` doit contenir des paquets compatibles avec Linux/Python 3.11. Retirer les paquets exclusivement Windows, par exemple `pywin32`, d'une copie appelée `requirements.docker.txt`, puis remplacer dans le `Dockerfile` :
-
-```dockerfile
-COPY requirements.txt /tmp/requirements.txt
-```
-
-par :
-
-```dockerfile
-COPY requirements.docker.txt /tmp/requirements.txt
-```
-
-## Pourquoi cette solution évite le blocage actuel
-
-Pandas, NumPy et scikit-learn sont installés dans un conteneur Linux géré par Docker. Le projet n'utilise donc plus les fichiers `.pyd` Windows refusés par Smart App Control.
+`.env`, `security`, `history`, `certificates`, `.runtime` et `alerts/eve.json`
+ne sont pas versionnés. Le certificat privé HTTPS reste exclusivement dans le
+volume Docker Caddy.

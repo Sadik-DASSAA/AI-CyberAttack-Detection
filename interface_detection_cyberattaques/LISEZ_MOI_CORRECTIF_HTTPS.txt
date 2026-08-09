@@ -1,0 +1,29 @@
+CORRECTIF HTTPS URGENT - SCA v10.3.4
+====================================
+
+Cause corrigee
+--------------
+Docker Compose ecrivait le mot "Copying" dans le flux d'erreur alors que la
+copie du certificat reussissait. PowerShell interrompait donc l'installation
+avant l'ajout du certificat dans Windows. Chrome affichait ensuite
+"Non securise".
+
+Installation
+------------
+1. Extrayez ce ZIP directement dans le dossier du projet.
+2. Acceptez le remplacement de demarrer_tout.ps1.
+3. Gardez Docker Desktop et les conteneurs actuels actifs.
+4. Double-cliquez sur CORRIGER_HTTPS.bat.
+5. Acceptez la demande administrateur.
+6. Attendez le message :
+   [OK] Certificat SCA approuve et HTTPS valide.
+7. Fermez COMPLETEMENT toutes les fenetres Google Chrome.
+8. Rouvrez Chrome, puis ouvrez uniquement :
+   https://localhost/SCA/
+
+Le correctif ne supprime ni compte, ni alerte, ni historique, ni volume Docker.
+Il ne reconstruit pas l'application. Il copie seulement le certificat public
+de la passerelle active et l'ajoute aux magasins racines de confiance Windows
+de l'utilisateur et de l'ordinateur.
+
+Si le correctif affiche une erreur, photographiez sa fenetre complete.

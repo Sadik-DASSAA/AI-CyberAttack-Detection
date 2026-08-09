@@ -1,6 +1,7 @@
 # Nom du fichier : 03_Preprocessing_CICIDS2017.py
 
 import gc
+import joblib
 import json
 import logging
 from pathlib import Path
@@ -1333,6 +1334,10 @@ X_test_scaled = pd.DataFrame(
     index=X_test_sel.index,
 )
 
+# Le Dashboard reçoit des flux bruts. Il doit donc réutiliser exactement les
+# bornes MinMax apprises sur Train avant d'appeler le modèle final.
+joblib.dump(scaler, PROCESSED_DIR / "minmax_scaler.joblib")
+
 controle_scaling = pd.DataFrame(
     {
         "variable": variables_retenues,
@@ -1591,7 +1596,7 @@ Preparer les huit fichiers CIC-IDS2017 pour l'apprentissage automatique, apres l
 - `figures/` : graphiques du pretraitement.
 - `tables/` : tableaux CSV servant de preuves.
 - `proofs/` : preuves JSON des etapes importantes.
-- `processed/` : fichiers finaux pour la modelisation (`X_train_final.csv`, `X_test_final.csv`, `y_train.csv`, `y_test.csv`, `label_encoder_mapping.json`, `class_weights.json`).
+- `processed/` : fichiers finaux pour la modelisation (`X_train_final.csv`, `X_test_final.csv`, `y_train.csv`, `y_test.csv`, `label_encoder_mapping.json`, `class_weights.json`, `minmax_scaler.joblib`).
 - `preuve_execution_pretraitement.log` : journal complet d'execution.
 
 ## Remarque importante

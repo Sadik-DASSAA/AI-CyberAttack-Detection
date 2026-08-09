@@ -15,7 +15,6 @@ venv_wsl/
 # Secrets
 .env
 !.env.example
-!env.example
 
 # Données brutes et données massives générées
 data/raw/
@@ -26,6 +25,16 @@ outputs/preprocessing/processed/*.csv
 # Données d'exécution du Dashboard
 interface_detection_cyberattaques/history/
 interface_detection_cyberattaques/alerts/eve.json
+interface_detection_cyberattaques/security/
+interface_detection_cyberattaques/certificates/
+interface_detection_cyberattaques/.runtime/
+interface_detection_cyberattaques/profile.json
+
+# Fichiers SQLite et certificats générés localement
+*.db
+*.db-shm
+*.db-wal
+SCA-local-root*.crt
 
 # Fichiers temporaires
 *.tmp

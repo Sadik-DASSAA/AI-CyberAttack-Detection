@@ -1,6 +1,6 @@
-# Supervision des cyberattaques - lancement en un clic (v10.3.3 HTTPS)
+# Supervision des cyberattaques - lancement en un clic (v10.4 HTTPS)
 
-La v10.3.3 conserve les correctifs SQLite et de synchronisation de la v10.2. Elle
+La v10.4 conserve les correctifs SQLite et de synchronisation de la v10.2. Elle
 ajoute un bouton authentifié permettant de remettre uniquement le volume de
 trafic analysé à zéro et publie le site sous une adresse HTTPS locale propre :
 
@@ -38,7 +38,7 @@ automatiquement les opérations suivantes :
 3. détecte l'interface réseau, l'adresse IPv4 et `HOME_NET` ;
 4. valide et lance Suricata dans une fenêtre dédiée ;
 5. construit et démarre l'API, le dashboard et la passerelle HTTPS ;
-6. installe dans le magasin Windows utilisateur le certificat local SCA ;
+6. installe dans les magasins Windows utilisateur et ordinateur le certificat local SCA ;
 7. vérifie le modèle IA et la lecture automatique de `eve.json` ;
 8. ouvre `https://localhost/SCA/` dans le navigateur.
 
@@ -48,8 +48,11 @@ La réussite est confirmée par le titre :
 SITE COMPLET OPERATIONNEL
 ```
 
-Le certificat public est conservé dans `certificates/SCA-local-root.crt`. Sa clé
-privée reste exclusivement dans le volume Docker HTTPS et n'est pas exportée.
+Le contrôle HTTPS tient compte du comportement Schannel des autorités locales :
+la chaîne TLS reste vérifiée, sans `--insecure`, et seule l'absence d'un serveur
+public de révocation est traitée au mieux. Le certificat public est conservé
+dans `certificates/SCA-local-root.crt`. Sa clé privée reste exclusivement dans
+le volume Docker HTTPS et n'est pas exportée.
 
 Dans le tableau de bord, le bouton **Réinitialiser le volume** demande une
 confirmation. Il remet seulement le compteur de flux du compte connecté à zéro.
@@ -95,12 +98,8 @@ automatiquement dans le dashboard en quelques secondes.
 ## Emplacements détectés automatiquement
 
 Le dossier `outputs` peut se trouver à côté du lanceur ou dans son dossier
-parent. Le dossier `alerts` peut également se trouver à côté du lanceur, dans
-son dossier parent, ou à l'emplacement déjà utilisé sur ce PC :
-
-```text
-C:\Users\lorde\Downloads\Datasets\interface_detection_cyberattaques\alerts
-```
+parent. Le dossier `alerts` peut également se trouver à côté du lanceur ou dans
+son dossier parent. Aucun chemin propre à un compte Windows n'est codé en dur.
 
 Le fichier facultatif
 `C:\ProgramData\Suricata\rules\lab-dashboard.rules` est chargé s'il existe.

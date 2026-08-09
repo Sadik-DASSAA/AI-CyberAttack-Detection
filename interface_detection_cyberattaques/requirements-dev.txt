@@ -1,0 +1,4 @@
+-r requirements.txt
+
+# Requis par starlette.testclient dans Starlette 1.3.1.
+httpx2==2.10.0
