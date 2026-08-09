@@ -1,0 +1,2 @@
+﻿Meilleur modele,Critere principal,Score,Justification
+Decision Tree,F1-score macro,0.8702,"Le F1-score macro est retenu car il donne le meme poids a toutes les classes, ce qui est adapte au desequilibre de CIC-IDS2017."

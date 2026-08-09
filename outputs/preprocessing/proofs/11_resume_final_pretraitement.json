@@ -1,0 +1,15 @@
+{
+    "observations_train": 1801984,
+    "observations_test": 772280,
+    "caracteristiques_finales": 70,
+    "classes": 15,
+    "valeurs_manquantes_finales": {
+        "train": 0,
+        "test": 0
+    },
+    "valeurs_infinies_finales": {
+        "train": 0,
+        "test": 0
+    },
+    "datasets_sauvegardes": true
+}

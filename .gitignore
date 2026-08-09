@@ -1,22 +1,35 @@
-﻿CIC-IDS2017/
-*.zip
-*.pcap
+﻿# Python
 __pycache__/
-.env
+*.py[cod]
+*.pyo
+.pytest_cache/
+.mypy_cache/
+
+# Environnements virtuels
 .venv/
+.venv-*/
 venv/
+venv_ancien/
+venv_wsl/
 
-CIC-IDS2017/
-merged_cicids2017.csv
-processed_data/train_test_data.npz
-*.zip
-*.pcap
-__pycache__/
+# Secrets
+.env
+!.env.example
+!env.example
 
-data/processed/train_test_data.npz
-data/processed/*.npz
-data/interim/merged_cicids2017.csv
+# Données brutes et données massives générées
 data/raw/
-*.zip
-*.pcap
-__pycache__/
+data/interim/
+data/processed/
+outputs/preprocessing/processed/*.csv
+
+# Données d'exécution du Dashboard
+interface_detection_cyberattaques/history/
+interface_detection_cyberattaques/alerts/eve.json
+
+# Fichiers temporaires
+*.tmp
+*.bak
+*.log
+.DS_Store
+Thumbs.db

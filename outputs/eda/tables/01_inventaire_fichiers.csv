@@ -1,0 +1,9 @@
+﻿numero,fichier,nom_court,taille_mo
+1,Friday-WorkingHours-Afternoon-DDos.pcap_ISCX.csv,Fri-DDoS,73.55
+2,Friday-WorkingHours-Afternoon-PortScan.pcap_ISCX.csv,Fri-PortScan,73.34
+3,Friday-WorkingHours-Morning.pcap_ISCX.csv,Fri-Morning,55.62
+4,Monday-WorkingHours.pcap_ISCX.csv,Monday,168.73
+5,Thursday-WorkingHours-Afternoon-Infilteration.pcap_ISCX.csv,Thu-Infiltration,79.25
+6,Thursday-WorkingHours-Morning-WebAttacks.pcap_ISCX.csv,Thu-WebAttacks,49.61
+7,Tuesday-WorkingHours.pcap_ISCX.csv,Tuesday,128.82
+8,Wednesday-workingHours.pcap_ISCX.csv,Wednesday,214.74

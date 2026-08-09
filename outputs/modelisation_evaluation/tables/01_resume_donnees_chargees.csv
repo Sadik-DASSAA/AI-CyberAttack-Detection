@@ -1,0 +1,5 @@
+﻿Element,Lignes,Colonnes
+X_train,1801984,70
+X_test,772280,70
+y_train,1801984,1
+y_test,772280,1

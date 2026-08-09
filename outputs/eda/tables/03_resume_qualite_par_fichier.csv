@@ -1,0 +1,9 @@
+﻿fichier,nom_court,lignes,colonnes,variables_numeriques,classes,valeurs_manquantes,taux_manquantes_pct,valeurs_infinies,taux_infinies_pct,doublons,taux_doublons_pct,benign,attaques,taux_attaques_pct
+Friday-WorkingHours-Afternoon-DDos.pcap_ISCX.csv,Fri-DDoS,225745,79,78,2,4,2.2e-05,64,0.000363,2633,1.1664,97718,128027,56.7131
+Friday-WorkingHours-Afternoon-PortScan.pcap_ISCX.csv,Fri-PortScan,286467,79,78,2,15,6.6e-05,727,0.003254,72353,25.257,127537,158930,55.4793
+Friday-WorkingHours-Morning.pcap_ISCX.csv,Fri-Morning,191033,79,78,2,28,0.000186,216,0.00145,6888,3.6057,189067,1966,1.0291
+Monday-WorkingHours.pcap_ISCX.csv,Monday,529918,79,78,1,64,0.000153,810,0.00196,26935,5.0829,529918,0,0.0
+Thursday-WorkingHours-Afternoon-Infilteration.pcap_ISCX.csv,Thu-Infiltration,288602,79,78,2,18,7.9e-05,396,0.001759,35630,12.3457,288566,36,0.0125
+Thursday-WorkingHours-Morning-WebAttacks.pcap_ISCX.csv,Thu-WebAttacks,170366,79,78,4,20,0.000149,250,0.001881,6066,3.5606,168186,2180,1.2796
+Tuesday-WorkingHours.pcap_ISCX.csv,Tuesday,445909,79,78,3,201,0.000571,327,0.00094,24065,5.3968,432074,13835,3.1027
+Wednesday-workingHours.pcap_ISCX.csv,Wednesday,692703,79,78,6,1008,0.001842,1586,0.002935,81909,11.8245,440031,252672,36.4762

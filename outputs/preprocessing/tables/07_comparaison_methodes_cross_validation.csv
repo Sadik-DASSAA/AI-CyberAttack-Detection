@@ -1,0 +1,29 @@
+﻿variable,fold,methode,famille,NRMSE,NMAE
+Flow Bytes/s,1,Zero,Statistique,237.5074554208364,13.741100152287085
+Flow Bytes/s,1,Moyenne,Statistique,237.1367112752247,20.69968699491382
+Flow Bytes/s,1,Mediane,Statistique,237.50568397606986,13.737731774021823
+Flow Bytes/s,1,Valeur frequente,Statistique,237.5074554208364,13.741100152287085
+Flow Bytes/s,1,KNN,Machine Learning,190.08162436274293,11.000709824786172
+Flow Bytes/s,1,Random Forest,Machine Learning,39.82785467917257,1.1764958831535517
+Flow Bytes/s,1,MLP neural network,Deep Learning,232.77704812062862,14.152087200819121
+Flow Bytes/s,2,Zero,Statistique,173.45320781952478,10.509045442807992
+Flow Bytes/s,2,Moyenne,Statistique,173.14320185549397,18.723392032019678
+Flow Bytes/s,2,Mediane,Statistique,173.45127279504615,10.503754483051857
+Flow Bytes/s,2,Valeur frequente,Statistique,173.45320781952478,10.509045442807992
+Flow Bytes/s,2,KNN,Machine Learning,155.7822254378796,8.138371584440616
+Flow Bytes/s,2,Random Forest,Machine Learning,60.550670312621776,1.5742393985623278
+Flow Bytes/s,2,MLP neural network,Deep Learning,163.65250673488563,15.21921586988685
+Flow Packets/s,1,Zero,Statistique,9.357106835114607,2.2429976078364704
+Flow Packets/s,1,Moyenne,Statistique,9.089062959601419,3.6806565628285846
+Flow Packets/s,1,Mediane,Statistique,9.356090996958354,2.242142924066718
+Flow Packets/s,1,Valeur frequente,Statistique,34.96229121399843,34.344750506791776
+Flow Packets/s,1,KNN,Machine Learning,5.433894914762002,0.9101622305997544
+Flow Packets/s,1,Random Forest,Machine Learning,0.3131850129158067,0.015114260761256486
+Flow Packets/s,1,MLP neural network,Deep Learning,8.138528627073672,2.091153704525104
+Flow Packets/s,2,Zero,Statistique,10.980635046804917,2.4565402020647396
+Flow Packets/s,2,Moyenne,Statistique,10.702348840804218,3.891261039096427
+Flow Packets/s,2,Mediane,Statistique,10.979675459763877,2.455628094969229
+Flow Packets/s,2,Valeur frequente,Statistique,34.73745950902353,34.068460315955036
+Flow Packets/s,2,KNN,Machine Learning,5.862042009878133,0.8282858737112738
+Flow Packets/s,2,Random Forest,Machine Learning,0.1066987747502044,0.007830045920386466
+Flow Packets/s,2,MLP neural network,Deep Learning,8.740767732414888,2.469902604264729

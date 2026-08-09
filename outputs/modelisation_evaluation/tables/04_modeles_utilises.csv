@@ -1,0 +1,5 @@
+﻿Modele,Role,Gestion desequilibre
+Decision Tree,Modele simple et interpretable,class_weight
+Random Forest,Ensemble de plusieurs arbres,class_weight
+Extra Trees,Variante plus aleatoire des forets d'arbres,class_weight
+Naive Bayes,Baseline probabiliste simple,Non applique

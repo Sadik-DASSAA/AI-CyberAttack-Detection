@@ -1,0 +1,5 @@
+﻿Modele,Accuracy,Precision macro,Recall macro,F1-score macro,Precision weighted,Recall weighted,F1-score weighted
+Decision Tree,0.9982,0.8735,0.8772,0.8702,0.9982,0.9982,0.9982
+Extra Trees,0.9979,0.8931,0.8082,0.8379,0.9979,0.9979,0.9979
+Random Forest,0.9949,0.8602,0.8413,0.8293,0.9971,0.9949,0.9958
+Naive Bayes,0.7058,0.3981,0.7851,0.4162,0.9696,0.7058,0.8061

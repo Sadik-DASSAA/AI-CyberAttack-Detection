@@ -1,0 +1,16 @@
+﻿Classe reelle,BENIGN,Bot,DDoS,DoS GoldenEye,DoS Hulk,DoS Slowhttptest,DoS slowloris,FTP-Patator,Heartbleed,Infiltration,PortScan,SSH-Patator,Web Attack - Brute Force,Web Attack - SQL Injection,Web Attack - XSS
+BENIGN,643961,104,4,16,113,19,4,0,2,1,286,0,3,0,3
+Bot,101,485,0,0,0,0,0,0,0,0,0,0,0,0,0
+DDoS,17,0,38386,0,2,0,0,0,0,0,0,0,0,0,0
+DoS GoldenEye,8,0,0,3064,12,2,0,0,0,0,0,0,0,0,0
+DoS Hulk,83,0,1,8,51753,1,1,0,0,0,8,0,0,0,0
+DoS Slowhttptest,15,0,0,3,0,1544,6,0,0,0,0,0,0,0,0
+DoS slowloris,3,0,0,0,1,6,1604,0,0,0,0,0,0,1,0
+FTP-Patator,0,0,0,0,0,0,0,1780,0,0,0,0,0,0,0
+Heartbleed,0,0,0,0,0,0,0,0,3,0,0,0,0,0,0
+Infiltration,2,0,0,0,0,0,0,0,0,9,0,0,0,0,0
+PortScan,306,0,0,0,7,0,0,0,0,0,26932,0,1,0,0
+SSH-Patator,1,0,0,0,0,0,0,0,0,0,0,965,0,0,0
+Web Attack - Brute Force,3,0,0,0,0,0,3,2,0,0,2,0,313,0,118
+Web Attack - SQL Injection,2,0,0,1,0,0,0,0,0,0,0,0,0,3,0
+Web Attack - XSS,7,0,0,0,0,0,1,0,0,0,3,0,117,0,68

@@ -1,0 +1,280 @@
+name: supervision-cyberattaques
+
+x-security: &security
+  restart: unless-stopped
+  init: true
+  read_only: true
+  cap_drop:
+    - ALL
+  security_opt:
+    - no-new-privileges:true
+  pids_limit: 256
+  networks:
+    - reseau-cyber
+  tmpfs:
+    - /tmp:size=256m,mode=1777
+
+services:
+  data-init:
+    image: supervision-cyberattaques-api:soc-v10-3-3-https-health-fix
+    build:
+      context: .
+      dockerfile: Dockerfile
+    working_dir: /app
+    command:
+      - python
+      - /app/data_migration.py
+      - import
+    user: "0:0"
+    restart: "no"
+    read_only: true
+    cap_drop:
+      - ALL
+    cap_add:
+      - CHOWN
+      - DAC_OVERRIDE
+      - FOWNER
+    security_opt:
+      - no-new-privileges:true
+    pids_limit: 64
+    network_mode: none
+    tmpfs:
+      - /tmp:size=32m,mode=1777
+    environment:
+      DATA_UID: "10001"
+      DATA_GID: "10001"
+      ACTIVE_SECURITY_DIR: /app/security
+      ACTIVE_HISTORY_DIR: /app/history
+      LEGACY_SECURITY_DIR: /legacy/security
+      LEGACY_HISTORY_DIR: /legacy/history
+    volumes:
+      - security-data:/app/security
+      - history-data:/app/history
+      - ./security:/legacy/security:ro
+      - ./history:/legacy/history:ro
+
+  api:
+    <<: *security
+    image: supervision-cyberattaques-api:soc-v10-3-3-https-health-fix
+    build:
+      context: .
+      dockerfile: Dockerfile
+    working_dir: /app
+    command:
+      - python
+      - -m
+      - uvicorn
+      - api:app
+      - --host
+      - 0.0.0.0
+      - --port
+      - "8000"
+      - --no-server-header
+      - --no-proxy-headers
+    environment:
+      PROJECT_ROOT: /workspace
+      SURICATA_MONITOR_ENABLED: "true"
+      SURICATA_EVE_FILE: /suricata/eve.json
+      SURICATA_POLL_INTERVAL: "2"
+      AUTH_DB_FILE: /app/security/authentication.db
+      AUTH_SESSION_HOURS: "12"
+      EMAIL_CODE_DURATION_MINUTES: "10"
+      EMAIL_CODE_RESEND_SECONDS: "60"
+      AUTH_ALLOW_ADDITIONAL_REGISTRATION: "false"
+      API_ALLOWED_ORIGINS: https://localhost
+      API_ALLOWED_HOSTS: api,localhost,127.0.0.1
+      API_DOCS_ENABLED: "false"
+      MAX_CSV_UPLOAD_MB: "200"
+      MAX_EVE_UPLOAD_MB: "64"
+      GMAIL_ENABLED: ${GMAIL_ENABLED:-true}
+      GMAIL_SENDER: ${GMAIL_SENDER:-}
+      GMAIL_APP_PASSWORD: ${GMAIL_APP_PASSWORD:-}
+      GMAIL_SMTP_HOST: ${GMAIL_SMTP_HOST:-smtp.gmail.com}
+      GMAIL_SMTP_PORT: ${GMAIL_SMTP_PORT:-587}
+    volumes:
+      - history-data:/app/history
+      - security-data:/app/security
+      - ${MODEL_OUTPUTS_DIR:-../outputs}:/workspace/outputs:ro
+      - "${SURICATA_ALERTS_DIR:-./alerts}:/suricata:ro"
+    depends_on:
+      data-init:
+        condition: service_completed_successfully
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health/ready', timeout=3)"
+      interval: 5s
+      timeout: 5s
+      retries: 30
+      start_period: 60s
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: "3"
+
+  dashboard:
+    <<: *security
+    image: supervision-cyberattaques-dashboard:soc-v10-3-3-https-health-fix
+    build:
+      context: .
+      dockerfile: Dockerfile
+    working_dir: /runtime/streamlit
+    command:
+      - python
+      - -m
+      - streamlit
+      - run
+      - /app/app.py
+      - --server.address=0.0.0.0
+      - --server.port=8501
+      - --server.baseUrlPath=SCA
+      - --server.headless=true
+      - --server.fileWatcherType=none
+      - --server.runOnSave=false
+      - --server.enableCORS=true
+      - --server.enableXsrfProtection=true
+      - --server.enableWebsocketCompression=false
+      - --server.websocketPingInterval=30
+      - --browser.serverAddress=localhost
+      - --browser.serverPort=443
+      - --browser.gatherUsageStats=false
+    environment:
+      API_URL: http://api:8000
+    depends_on:
+      api:
+        condition: service_healthy
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8501/SCA/_stcore/health', timeout=3)"
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 30s
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: "3"
+
+  gateway-init:
+    image: caddy:2.11.2
+    user: "0:0"
+    restart: "no"
+    read_only: true
+    cap_drop:
+      - ALL
+    cap_add:
+      - CHOWN
+      # Caddy protege sa PKI locale avec des repertoires prives. Lors des
+      # redemarrages, ces deux capacites permettent au conteneur one-shot de
+      # les traverser et de conserver leur proprietaire non-root.
+      - DAC_OVERRIDE
+      - FOWNER
+    security_opt:
+      - no-new-privileges:true
+    pids_limit: 32
+    network_mode: none
+    command:
+      - /bin/sh
+      - -c
+      - chown -R 10001:10001 /data /config
+    volumes:
+      - caddy-data:/data
+      - caddy-config:/config
+
+  gateway:
+    image: caddy:2.11.2
+    user: "10001:10001"
+    restart: unless-stopped
+    init: true
+    read_only: true
+    cap_drop:
+      - ALL
+    # L'image officielle Caddy porte CAP_NET_BIND_SERVICE sur son binaire.
+    # Sans cette capacite dans le bounding set, execve() echoue avec EPERM,
+    # meme si Caddy n'ecoute ici que sur le port non privilegie 8443.
+    cap_add:
+      - NET_BIND_SERVICE
+    security_opt:
+      - no-new-privileges:true
+    pids_limit: 128
+    networks:
+      - reseau-cyber
+    tmpfs:
+      - /tmp:size=64m,mode=1777
+    command:
+      - caddy
+      - run
+      - --config
+      - /etc/caddy/Caddyfile
+      - --adapter
+      - caddyfile
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
+    depends_on:
+      gateway-init:
+        condition: service_completed_successfully
+      dashboard:
+        condition: service_healthy
+    ports:
+      - "127.0.0.1:443:8443"
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: "3"
+
+  data-export:
+    profiles:
+      - maintenance
+    image: supervision-cyberattaques-api:soc-v10-3-3-https-health-fix
+    build:
+      context: .
+      dockerfile: Dockerfile
+    working_dir: /app
+    command:
+      - python
+      - /app/data_migration.py
+      - export
+    user: "0:0"
+    restart: "no"
+    read_only: true
+    cap_drop:
+      - ALL
+    cap_add:
+      - DAC_OVERRIDE
+      - FOWNER
+    security_opt:
+      - no-new-privileges:true
+    pids_limit: 64
+    network_mode: none
+    tmpfs:
+      - /tmp:size=32m,mode=1777
+    environment:
+      ACTIVE_SECURITY_DIR: /app/security
+      ACTIVE_HISTORY_DIR: /app/history
+      LEGACY_SECURITY_DIR: /legacy/security
+      LEGACY_HISTORY_DIR: /legacy/history
+    volumes:
+      - security-data:/app/security:ro
+      - history-data:/app/history:ro
+      - ./security:/legacy/security
+      - ./history:/legacy/history
+
+networks:
+  reseau-cyber:
+    driver: bridge
+
+volumes:
+  security-data:
+  history-data:
+  caddy-data:
+  caddy-config:

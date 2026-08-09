@@ -1,0 +1,7 @@
+{
+    "strategie": "Separation stratifiee 70 % Train / 30 % Test",
+    "train_pourcentage": 70.0,
+    "test_pourcentage": 30.0,
+    "cross_validation": "StratifiedKFold a 5 folds applique uniquement sur Train",
+    "justification": "Le Test reste independant et n'est utilise qu'une seule fois pour l'evaluation finale. La validation est realisee a l'interieur du Train par cross-validation."
+}

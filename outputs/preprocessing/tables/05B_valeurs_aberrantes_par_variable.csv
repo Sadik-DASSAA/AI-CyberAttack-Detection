@@ -1,0 +1,79 @@
+﻿variable,q1,q3,iqr,borne_inferieure,borne_superieure,valeurs_valides,valeurs_aberrantes,pourcentage_aberrant,decision
+Fwd IAT Std,0.0,299755.20207500004,299755.20207500004,-449632.80311250006,749388.0051875,2574264,621237,24.132606445958924,conservee_analyse_descriptive
+Total Length of Bwd Packets,6.0,860.0,854.0,-1275.0,2141.0,2574264,587938,22.839071672524653,conservee_analyse_descriptive
+Subflow Bwd Bytes,6.0,860.0,854.0,-1275.0,2141.0,2574264,587938,22.839071672524653,conservee_analyse_descriptive
+Destination Port,53.0,443.0,390.0,-532.0,1028.0,2574264,547284,21.25982416721828,conservee_analyse_descriptive
+Bwd IAT Total,0.0,147678.0,147678.0,-221517.0,369195.0,2574264,529429,20.56622786163346,conservee_analyse_descriptive
+Bwd Packet Length Std,0.0,220.240592,220.240592,-330.360888,550.60148,2574264,529357,20.56343094569943,conservee_analyse_descriptive
+Bwd IAT Mean,0.0,28897.3499975,28897.3499975,-43346.02499625,72243.37499375001,2574264,522518,20.297762778021212,conservee_analyse_descriptive
+Packet Length Variance,5.333333333,94032.5728888138,94027.2395554808,-141035.52599988822,235073.43222203502,2574264,518892,20.156906983899088,conservee_analyse_descriptive
+Fwd IAT Min,0.0,49.0,49.0,-73.5,122.5,2574264,516607,20.06814374904827,conservee_analyse_descriptive
+Bwd IAT Max,0.0,105779.25,105779.25,-158668.875,264448.125,2574264,515852,20.038814977795596,conservee_analyse_descriptive
+Flow IAT Mean,78.6666666667,502283.575,502204.9083333333,-753228.6958333333,1255590.9375,2574264,515512,20.02560731921823,conservee_analyse_descriptive
+Bwd IAT Std,0.0,25807.36926,25807.36926,-38711.053889999996,64518.423149999995,2574264,515375,20.020285409732647,conservee_analyse_descriptive
+Fwd IAT Mean,1.0,687395.999975,687394.999975,-1031091.4999625001,1718488.4999375,2574264,514122,19.971611303269597,conservee_analyse_descriptive
+Flow IAT Min,3.0,69.0,66.0,-96.0,168.0,2574264,488078,18.95990465624349,conservee_analyse_descriptive
+Flow Bytes/s,119.9688783,130434.7826,130314.8137217,-195352.25170425003,325907.00318255,2572640,484494,18.832561104546304,conservee_analyse_descriptive
+Fwd IAT Max,1.0,3776399.75,3776398.75,-5664597.125,9440997.875,2574264,483195,18.770219371439758,conservee_analyse_descriptive
+Fwd IAT Total,1.0,4298155.25,4298154.25,-6447230.375,10745386.625,2574264,469258,18.228821907931742,conservee_analyse_descriptive
+Flow Duration,199.0,5222701.5,5222502.5,-7833554.75,13056455.25,2574264,469212,18.227034989418335,conservee_analyse_descriptive
+Bwd Packets/s,0.169542135,4081.632653,4081.463110865,-6122.025124162501,10203.827319297501,2574264,456545,17.73497201530224,conservee_analyse_descriptive
+Flow IAT Std,0.0,1406633.25675,1406633.25675,-2109949.885125,3516583.1418749997,2574264,446238,17.334585730134904,conservee_analyse_descriptive
+Avg Bwd Segment Size,6.0,214.0,208.0,-306.0,526.0,2574264,440834,17.12466165086409,conservee_analyse_descriptive
+Bwd Packet Length Mean,6.0,214.0,208.0,-306.0,526.0,2574264,440834,17.12466165086409,conservee_analyse_descriptive
+Bwd Packet Length Max,6.0,611.0,605.0,-901.5,1518.5,2574264,420257,16.32532638455108,conservee_analyse_descriptive
+Init_Win_bytes_forward,-1.0,8192.0,8193.0,-12290.5,20481.5,2574264,399417,15.51577460586793,conservee_analyse_descriptive
+Packet Length Mean,6.0,147.0238095,141.0238095,-205.53571425,358.55952375000004,2574264,393021,15.267315240394923,conservee_analyse_descriptive
+Max Packet Length,6.0,976.0,970.0,-1449.0,2431.0,2574264,376525,14.626510723064923,conservee_analyse_descriptive
+Average Packet Size,9.0,172.39545455,163.39545455,-236.09318182500002,417.48863637500006,2574264,374178,14.535339032826469,conservee_analyse_descriptive
+Packet Length Std,2.309401077,306.64731024577503,304.337909168775,-454.1974626761625,763.1541739989375,2574264,345463,13.419874573858781,conservee_analyse_descriptive
+Subflow Fwd Packets,2.0,5.0,3.0,-2.5,9.5,2574264,329671,12.80641767899485,conservee_analyse_descriptive
+Total Fwd Packets,2.0,5.0,3.0,-2.5,9.5,2574264,329671,12.80641767899485,conservee_analyse_descriptive
+Total Length of Fwd Packets,12.0,325.0,313.0,-457.5,794.5,2574264,320986,12.469039694452473,conservee_analyse_descriptive
+Subflow Fwd Bytes,12.0,325.0,313.0,-457.5,794.5,2574264,320986,12.469039694452473,conservee_analyse_descriptive
+Flow IAT Max,167.0,4915373.5,4915206.5,-7372642.75,12288183.25,2574264,296510,11.518243661100804,conservee_analyse_descriptive
+Init_Win_bytes_backward,-1.0,235.0,236.0,-355.0,589.0,2574264,284879,11.066425199591029,conservee_analyse_descriptive
+Bwd IAT Min,0.0,47.0,47.0,-70.5,117.5,2574264,284692,11.05916098737348,conservee_analyse_descriptive
+Fwd Header Length.1,40.0,144.0,104.0,-116.0,300.0,2574264,280829,10.909098678301838,conservee_analyse_descriptive
+Fwd Header Length,40.0,144.0,104.0,-116.0,300.0,2574264,280829,10.909098678301838,conservee_analyse_descriptive
+Bwd Header Length,20.0,120.0,100.0,-130.0,270.0,2574264,263527,10.236984240932554,conservee_analyse_descriptive
+Fwd Packets/s,1.3068685485,9803.921569,9802.6147004515,-14702.615182128751,24507.843619677253,2574264,252277,9.799966126240355,conservee_analyse_descriptive
+Fwd Packet Length Std,0.0,71.5957012986,71.5957012986,-107.39355194790001,178.98925324650003,2574264,249163,9.678999512093554,conservee_analyse_descriptive
+Fwd Packet Length Max,6.0,200.0,194.0,-285.0,491.0,2574264,247162,9.601268556760301,conservee_analyse_descriptive
+Flow Packets/s,2.2466985045000003,18779.34272,18777.0960214955,-28163.397333738754,46944.986752243254,2572640,244905,9.519598544685614,conservee_analyse_descriptive
+Subflow Bwd Packets,1.0,5.0,4.0,-5.0,11.0,2574264,239223,9.292869728978847,conservee_analyse_descriptive
+Total Backward Packets,1.0,5.0,4.0,-5.0,11.0,2574264,239223,9.292869728978847,conservee_analyse_descriptive
+act_data_pkt_fwd,0.0,3.0,3.0,-4.5,7.5,2574264,194633,7.560724152612163,conservee_analyse_descriptive
+Fwd Packet Length Mean,6.0,52.0,46.0,-63.0,121.0,2574264,177802,6.906906206977995,conservee_analyse_descriptive
+Avg Fwd Segment Size,6.0,52.0,46.0,-63.0,121.0,2574264,177802,6.906906206977995,conservee_analyse_descriptive
+Bwd Packet Length Min,0.0,82.0,82.0,-123.0,205.0,2574264,67288,2.6138733245696635,conservee_analyse_descriptive
+Down/Up Ratio,0.0,1.0,1.0,-1.5,2.5,2574264,27075,1.0517569293592266,conservee_analyse_descriptive
+Fwd Packet Length Min,0.0,37.0,37.0,-55.5,92.5,2574264,13546,0.5262086561440474,conservee_analyse_descriptive
+Min Packet Length,0.0,37.0,37.0,-55.5,92.5,2574264,8831,0.3430495085197167,conservee_analyse_descriptive
+min_seg_size_forward,20.0,32.0,12.0,2.0,50.0,2574264,2042,0.07932364357346411,conservee_analyse_descriptive
+Bwd PSH Flags,0.0,0.0,0.0,,,2574264,0,0.0,conservee_analyse_descriptive
+Fwd URG Flags,0.0,0.0,0.0,,,2574264,0,0.0,conservee_analyse_descriptive
+RST Flag Count,0.0,0.0,0.0,,,2574264,0,0.0,conservee_analyse_descriptive
+SYN Flag Count,0.0,0.0,0.0,,,2574264,0,0.0,conservee_analyse_descriptive
+FIN Flag Count,0.0,0.0,0.0,,,2574264,0,0.0,conservee_analyse_descriptive
+Fwd PSH Flags,0.0,0.0,0.0,,,2574264,0,0.0,conservee_analyse_descriptive
+Bwd URG Flags,0.0,0.0,0.0,,,2574264,0,0.0,conservee_analyse_descriptive
+URG Flag Count,0.0,0.0,0.0,,,2574264,0,0.0,conservee_analyse_descriptive
+CWE Flag Count,0.0,0.0,0.0,,,2574264,0,0.0,conservee_analyse_descriptive
+PSH Flag Count,0.0,1.0,1.0,-1.5,2.5,2574264,0,0.0,conservee_analyse_descriptive
+Bwd Avg Bulk Rate,0.0,0.0,0.0,,,2574264,0,0.0,conservee_analyse_descriptive
+Bwd Avg Packets/Bulk,0.0,0.0,0.0,,,2574264,0,0.0,conservee_analyse_descriptive
+Bwd Avg Bytes/Bulk,0.0,0.0,0.0,,,2574264,0,0.0,conservee_analyse_descriptive
+Fwd Avg Bulk Rate,0.0,0.0,0.0,,,2574264,0,0.0,conservee_analyse_descriptive
+Fwd Avg Packets/Bulk,0.0,0.0,0.0,,,2574264,0,0.0,conservee_analyse_descriptive
+Fwd Avg Bytes/Bulk,0.0,0.0,0.0,,,2574264,0,0.0,conservee_analyse_descriptive
+ACK Flag Count,0.0,1.0,1.0,-1.5,2.5,2574264,0,0.0,conservee_analyse_descriptive
+ECE Flag Count,0.0,0.0,0.0,,,2574264,0,0.0,conservee_analyse_descriptive
+Active Mean,0.0,0.0,0.0,,,2574264,0,0.0,conservee_analyse_descriptive
+Active Std,0.0,0.0,0.0,,,2574264,0,0.0,conservee_analyse_descriptive
+Active Max,0.0,0.0,0.0,,,2574264,0,0.0,conservee_analyse_descriptive
+Active Min,0.0,0.0,0.0,,,2574264,0,0.0,conservee_analyse_descriptive
+Idle Mean,0.0,0.0,0.0,,,2574264,0,0.0,conservee_analyse_descriptive
+Idle Std,0.0,0.0,0.0,,,2574264,0,0.0,conservee_analyse_descriptive
+Idle Max,0.0,0.0,0.0,,,2574264,0,0.0,conservee_analyse_descriptive
+Idle Min,0.0,0.0,0.0,,,2574264,0,0.0,conservee_analyse_descriptive

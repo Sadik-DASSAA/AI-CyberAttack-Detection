@@ -1,0 +1,10 @@
+{
+    "ensemble_analyse": "Train",
+    "raison": "Le desequilibre est analyse apres la separation pour documenter les classes majoritaires et minoritaires sans modifier l'ensemble Test.",
+    "classe_majoritaire_train": "BENIGN",
+    "effectif_majoritaire_train": 1503870,
+    "classe_minoritaire_train": "Heartbleed",
+    "effectif_minoritaire_train": 8,
+    "rapport_desequilibre_train": 187983.75,
+    "strategie_retenue": "ponderation des classes calculee uniquement sur Train"
+}

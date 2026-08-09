@@ -1,0 +1,8 @@
+{
+    "methode": "class_weight balanced",
+    "type": "reequilibrage par ponderation, sans duplication ni suppression d'observations",
+    "ensemble_utilise_pour_calculer_les_poids": "Train uniquement",
+    "application": "Ces poids seront utilises pendant l'entrainement des modeles de detection afin de donner plus d'importance aux classes rares.",
+    "test_modifie": false,
+    "raison_test_non_modifie": "Le Test doit rester representatif des donnees reelles pour l'evaluation finale."
+}

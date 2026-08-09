@@ -1,0 +1,16 @@
+﻿Classe reelle,Classe,Nombre_total,Nombre_erreurs,Taux erreur (%)
+0,BENIGN,644516,555,0.0861
+1,Bot,586,101,17.2355
+2,DDoS,38405,19,0.0495
+3,DoS GoldenEye,3086,22,0.7129
+4,DoS Hulk,51855,102,0.1967
+5,DoS Slowhttptest,1568,24,1.5306
+6,DoS slowloris,1615,11,0.6811
+7,FTP-Patator,1780,0,0.0
+8,Heartbleed,3,0,0.0
+9,Infiltration,11,2,18.1818
+10,PortScan,27246,314,1.1525
+11,SSH-Patator,966,1,0.1035
+12,Web Attack - Brute Force,441,128,29.0249
+13,Web Attack - SQL Injection,6,3,50.0
+14,Web Attack - XSS,196,128,65.3061

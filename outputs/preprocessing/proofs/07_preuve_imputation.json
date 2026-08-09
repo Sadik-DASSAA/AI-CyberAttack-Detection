@@ -1,0 +1,10 @@
+{
+    "methode_appliquee_finalement": "Random Forest pour les variables cibles, mediane comme base technique pour les autres variables",
+    "variables_imputees_par_random_forest": [
+        "Flow Bytes/s",
+        "Flow Packets/s"
+    ],
+    "raison": "Random Forest est appliquee aux variables de debit contenant les valeurs infinies converties en NaN. La mediane sert uniquement a completer les variables auxiliaires necessaires au modele.",
+    "nan_train_apres": 0,
+    "nan_test_apres": 0
+}

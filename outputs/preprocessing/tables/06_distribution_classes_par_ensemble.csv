@@ -1,0 +1,31 @@
+﻿classe,effectif,ensemble
+BENIGN,1503870,Train
+DoS Hulk,120994,Train
+DDoS,89611,Train
+PortScan,63573,Train
+DoS GoldenEye,7200,Train
+FTP-Patator,4153,Train
+DoS slowloris,3770,Train
+DoS Slowhttptest,3660,Train
+SSH-Patator,2253,Train
+Bot,1367,Train
+Web Attack - Brute Force,1029,Train
+Web Attack - XSS,456,Train
+Infiltration,25,Train
+Web Attack - SQL Injection,15,Train
+Heartbleed,8,Train
+BENIGN,644516,Test
+DoS Hulk,51855,Test
+DDoS,38405,Test
+PortScan,27246,Test
+DoS GoldenEye,3086,Test
+FTP-Patator,1780,Test
+DoS slowloris,1615,Test
+DoS Slowhttptest,1568,Test
+SSH-Patator,966,Test
+Bot,586,Test
+Web Attack - Brute Force,441,Test
+Web Attack - XSS,196,Test
+Infiltration,11,Test
+Web Attack - SQL Injection,6,Test
+Heartbleed,3,Test

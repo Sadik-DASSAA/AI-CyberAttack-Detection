@@ -1,0 +1,16 @@
+﻿classe,effectif,ensemble,pourcentage_train
+BENIGN,1503870,Train,83.456346
+DoS Hulk,120994,Train,6.714488
+DDoS,89611,Train,4.972908
+PortScan,63573,Train,3.527945
+DoS GoldenEye,7200,Train,0.39956
+FTP-Patator,4153,Train,0.230468
+DoS slowloris,3770,Train,0.209214
+DoS Slowhttptest,3660,Train,0.203109
+SSH-Patator,2253,Train,0.125029
+Bot,1367,Train,0.075861
+Web Attack - Brute Force,1029,Train,0.057104
+Web Attack - XSS,456,Train,0.025305
+Infiltration,25,Train,0.001387
+Web Attack - SQL Injection,15,Train,0.000832
+Heartbleed,8,Train,0.000444

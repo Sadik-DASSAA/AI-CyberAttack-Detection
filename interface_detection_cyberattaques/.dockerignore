@@ -1,0 +1,7 @@
+*
+!Dockerfile
+!requirements.txt
+!api.py
+!app.py
+!auth_security.py
+!data_migration.py

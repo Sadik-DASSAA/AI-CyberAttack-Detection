@@ -1,0 +1,72 @@
+{
+    "methode": "IQR / Tukey",
+    "formule_iqr": "IQR = Q3 - Q1",
+    "borne_inferieure": "Q1 - 1.5 * IQR",
+    "borne_superieure": "Q3 + 1.5 * IQR",
+    "variables_analysees": 78,
+    "total_valeurs_aberrantes_detectees": 18643162,
+    "suppression_appliquee": false,
+    "justification": "Les valeurs aberrantes sont conservees, car dans un dataset de detection d'intrusion elles peuvent representer des comportements reels d'attaque.",
+    "top_variables": [
+        {
+            "variable": "Fwd IAT Std",
+            "q1": 0.0,
+            "q3": 299755.202075,
+            "iqr": 299755.202075,
+            "borne_inferieure": -449632.8031125001,
+            "borne_superieure": 749388.0051875,
+            "valeurs_valides": 2574264,
+            "valeurs_aberrantes": 621237,
+            "pourcentage_aberrant": 24.132606446,
+            "decision": "conservee_analyse_descriptive"
+        },
+        {
+            "variable": "Total Length of Bwd Packets",
+            "q1": 6.0,
+            "q3": 860.0,
+            "iqr": 854.0,
+            "borne_inferieure": -1275.0,
+            "borne_superieure": 2141.0,
+            "valeurs_valides": 2574264,
+            "valeurs_aberrantes": 587938,
+            "pourcentage_aberrant": 22.8390716725,
+            "decision": "conservee_analyse_descriptive"
+        },
+        {
+            "variable": "Subflow Bwd Bytes",
+            "q1": 6.0,
+            "q3": 860.0,
+            "iqr": 854.0,
+            "borne_inferieure": -1275.0,
+            "borne_superieure": 2141.0,
+            "valeurs_valides": 2574264,
+            "valeurs_aberrantes": 587938,
+            "pourcentage_aberrant": 22.8390716725,
+            "decision": "conservee_analyse_descriptive"
+        },
+        {
+            "variable": "Destination Port",
+            "q1": 53.0,
+            "q3": 443.0,
+            "iqr": 390.0,
+            "borne_inferieure": -532.0,
+            "borne_superieure": 1028.0,
+            "valeurs_valides": 2574264,
+            "valeurs_aberrantes": 547284,
+            "pourcentage_aberrant": 21.2598241672,
+            "decision": "conservee_analyse_descriptive"
+        },
+        {
+            "variable": "Bwd IAT Total",
+            "q1": 0.0,
+            "q3": 147678.0,
+            "iqr": 147678.0,
+            "borne_inferieure": -221517.0,
+            "borne_superieure": 369195.0,
+            "valeurs_valides": 2574264,
+            "valeurs_aberrantes": 529429,
+            "pourcentage_aberrant": 20.5662278616,
+            "decision": "conservee_analyse_descriptive"
+        }
+    ]
+}

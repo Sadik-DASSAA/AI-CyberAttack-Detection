@@ -1,0 +1,2 @@
+﻿nombre_fichiers,nombre_lignes,nombre_colonnes,nombre_classes,valeurs_manquantes,valeurs_infinies,doublons_internes_aux_fichiers,lignes_benign,lignes_attaques,taux_benign_pct,taux_attaques_pct
+8,2830743,79,15,1358,4376,256479,2273097,557646,80.3004,19.6996

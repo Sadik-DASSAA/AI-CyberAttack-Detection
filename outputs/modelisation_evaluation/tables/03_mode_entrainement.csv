@@ -1,0 +1,9 @@
+﻿Parametre,Valeur
+Mode donnees,Toutes les lignes du Train
+TRAIN_SAMPLE_SIZE,None - dataset complet
+RUN_LOGISTIC_REGRESSION,False
+N_ESTIMATORS_TREE_ENSEMBLES,20
+Lignes Train utilisees,1801984
+Lignes Test utilisees,772280
+Variables,70
+Classes,15

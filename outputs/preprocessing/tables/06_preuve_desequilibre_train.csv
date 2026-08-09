@@ -1,0 +1,2 @@
+﻿classe_majoritaire,effectif_majoritaire_train,classe_minoritaire,effectif_minoritaire_train,rapport_desequilibre_train,decision
+BENIGN,1503870,Heartbleed,8,187983.75,reequilibrage par ponderation des classes applique uniquement sur Train

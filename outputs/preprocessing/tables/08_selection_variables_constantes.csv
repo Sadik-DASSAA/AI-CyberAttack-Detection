@@ -1,0 +1,79 @@
+﻿variable,variance_train,decision
+Destination Port,356003336.411195,retenue
+Flow Duration,1220052420706115.0,retenue
+Total Fwd Packets,676973.720212033,retenue
+Total Backward Packets,1194353.2754754147,retenue
+Total Length of Fwd Packets,136893980.6584543,retenue
+Total Length of Bwd Packets,6273298868711.717,retenue
+Fwd Packet Length Max,563742.5918668548,retenue
+Fwd Packet Length Min,3630.770455742774,retenue
+Fwd Packet Length Mean,37521.586667712836,retenue
+Fwd Packet Length Std,86768.19361090867,retenue
+Bwd Packet Length Max,4088637.5475744912,retenue
+Bwd Packet Length Min,5020.692541315084,retenue
+Bwd Packet Length Mean,393899.33619084855,retenue
+Bwd Packet Length Std,763798.8352059555,retenue
+Flow Bytes/s,700835807687172.1,retenue
+Flow Packets/s,40714685727.839645,retenue
+Flow IAT Mean,21507820910165.043,retenue
+Flow IAT Std,70174284265725.48,retenue
+Flow IAT Max,647264260147289.6,retenue
+Flow IAT Min,8895152422062.146,retenue
+Fwd IAT Total,1215339224602151.0,retenue
+Fwd IAT Mean,98312523678691.1,retenue
+Fwd IAT Std,100889323721374.55,retenue
+Fwd IAT Max,651314132395395.2,retenue
+Fwd IAT Min,80275833978530.52,retenue
+Bwd IAT Total,896440937109042.2,retenue
+Bwd IAT Mean,86412506535558.33,retenue
+Bwd IAT Std,43009099251198.78,retenue
+Bwd IAT Max,320902446782166.8,retenue
+Bwd IAT Min,75736571547562.06,retenue
+Fwd PSH Flags,0.04582180866222461,retenue
+Bwd PSH Flags,0.0,supprimee_constante
+Fwd URG Flags,2.774643969465296e-05,retenue
+Bwd URG Flags,0.0,supprimee_constante
+Fwd Header Length,681663931746935.0,retenue
+Bwd Header Length,3293218694239.2812,retenue
+Fwd Packets/s,36939834612.10799,retenue
+Bwd Packets/s,1469064296.02877,retenue
+Min Packet Length,660.516071047142,retenue
+Max Packet Length,4433671.028495955,retenue
+Packet Length Mean,99824.99515980897,retenue
+Packet Length Std,430137.50658215705,retenue
+Packet Length Variance,2964748408073.2744,retenue
+FIN Flag Count,0.03056158392107077,retenue
+SYN Flag Count,0.04582180866222461,retenue
+RST Flag Count,0.000265747608673497,retenue
+PSH Flag Count,0.20659810762455122,retenue
+ACK Flag Count,0.213914237765745,retenue
+URG Flag Count,0.0903499616178233,retenue
+CWE Flag Count,2.774643969465296e-05,retenue
+ECE Flag Count,0.000265747608673497,retenue
+Down/Up Ratio,0.47572876255794083,retenue
+Average Packet Size,117582.1334043757,retenue
+Avg Fwd Segment Size,37521.586667712836,retenue
+Avg Bwd Segment Size,393899.3361908755,retenue
+Fwd Header Length.1,681663931746935.0,retenue
+Fwd Avg Bytes/Bulk,0.0,supprimee_constante
+Fwd Avg Packets/Bulk,0.0,supprimee_constante
+Fwd Avg Bulk Rate,0.0,supprimee_constante
+Bwd Avg Bytes/Bulk,0.0,supprimee_constante
+Bwd Avg Packets/Bulk,0.0,supprimee_constante
+Bwd Avg Bulk Rate,0.0,supprimee_constante
+Subflow Fwd Packets,676973.720212033,retenue
+Subflow Fwd Bytes,136469801.35066125,retenue
+Subflow Bwd Packets,1194353.2754754147,retenue
+Subflow Bwd Bytes,6273386618872.463,retenue
+Init_Win_bytes_forward,210709049.0091615,retenue
+Init_Win_bytes_backward,78269084.22774358,retenue
+act_data_pkt_fwd,478637.8757139098,retenue
+min_seg_size_forward,1658077915078.1646,retenue
+Active Mean,448351347182.43085,retenue
+Active Std,172250348600.60516,retenue
+Active Max,1151597565507.4521,retenue
+Active Min,351421165654.82574,retenue
+Idle Mean,605530221158700.4,retenue
+Idle Std,23190288692075.81,retenue
+Idle Max,643574547027605.1,retenue
+Idle Min,592498582526568.4,retenue

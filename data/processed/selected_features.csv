@@ -69,3 +69,8 @@ Idle Mean
 Idle Std
 Idle Max
 Idle Min
+FE_Total_Packets
+FE_Total_Bytes
+FE_Bytes_Per_Packet
+FE_Fwd_Bwd_Packet_Ratio
+FE_Packets_Per_Second
